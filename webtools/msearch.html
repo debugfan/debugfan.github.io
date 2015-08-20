@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>MultiSearch</title>
+<style type="text/css">
+<!--
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 10px;
+    box-sizing: border-box;
+}
+#div_content iframe {
+	width: 100%;
+	height: 100%;
+}
+#div_content {
+	height: 100%;
+	display: table-row;
+	clear: both;
+}
+div {
+	margin: 0px;
+	padding: 0px;
+}
+#wrapper {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+#wrapper #div_search {
+	display: table-row;
+}
+#wrapper #div_nav {
+	width: 100%;
+	display: table-row;
+}
+#wrapper #div_nav ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+#wrapper #div_nav li {
+	width: 100px;
+	float: left;
+	text-align: center;
+}
+#wrapper #div_search #label_location {
+	width: 100%;
+}
+-->
+</style>
+</head>
+<body>
+<div id="wrapper">
+  <div id="div_search">
+	<label>
+	<input name="textfield" type="text" id="input_searching" />
+	</label>
+	<label>
+	<input name="Submit" type="submit" onclick="do_search();" value="Search" />
+	</label>
+    <a href="http://www.baidu.com" id="a_location">http://www.baidu.com</a>	</div>
+  <div id="div_nav">
+    <ul>
+      <li><a href="javascript:set_dict(&quot;EO&quot;);">Etymonline</a></li>
+      <li><a href="javascript:set_dict(&quot;MD&quot;);">MnemonicDict</a></li>
+      <li><a href="javascript:set_dict(&quot;WK&quot;);">Wikipedia</a></li>
+      <li><a href="javascript:set_dict(&quot;WKT&quot;);">Wiktionary</a></li>
+      <li><a href="javascript:set_dict(&quot;BD&quot;);">BingDict</a></li>
+      <li><a href="javascript:set_dict(&quot;RZ&quot;);">RhymeZone</a></li>
+      <li><a href="javascript:set_dict(&quot;BAI&quot;);">BaiduDict</a></li>
+    </ul>
+  </div>
+  <div id="div_content">
+    <iframe src="http://www.baidu.com" scrolling="auto" id="iframe_content"></iframe>
+  </div>
+</div>
+<script language="JavaScript" type="text/javascript">
+var selected_dict = "EO";
+function set_dict(dict) {
+	selected_dict = dict;
+	do_search();
+}
+function do_search() {
+	var searching_word = document.getElementById("input_searching").value;
+	var jump_location;
+	if(selected_dict == "EO") {
+		jump_location =
+			"http://www.etymonline.com/index.php?allowed_in_frame=1&search=" 
+				+ searching_word 
+				+ "&searchmode=none";
+	}
+	else if(selected_dict == "MD") {
+		jump_location =	
+			"http://mnemonicdictionary.com/?word=" + searching_word;		
+	}
+	else if(selected_dict == "WK") {
+		jump_location =	
+			"https://en.wikipedia.org/wiki/" + searching_word;		
+	}
+	else if(selected_dict == "WKT") {
+		jump_location =	
+			"https://en.wiktionary.org/wiki/" + searching_word;		
+	}
+	else if(selected_dict == "BD") {
+		jump_location =
+			"http://cn.bing.com/dict/search?q=" 
+			+ searching_word
+			+ "&go=Submit+Query&qs=bs&form=CM";	
+	}
+	else if(selected_dict == "RZ") {
+		jump_location =
+			"http://www.rhymezone.com/r/rhyme.cgi?Word="
+			+ searching_word
+			+ "&typeofrhyme=perfect&org1=syl&org2=l&org3=y";
+	}
+	else if(selected_dict == "BAI") {
+		jump_location =
+			"http://fanyi.baidu.com/?aldtype=85#en/zh/"
+			+ searching_word;
+	}
+	document.getElementById("a_location").href = jump_location;
+	document.getElementById("a_location").innerHTML = jump_location;
+	document.getElementById("iframe_content").src = jump_location;
+}
+</script>
+</body>
+</html>
