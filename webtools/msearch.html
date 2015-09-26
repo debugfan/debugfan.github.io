@@ -10,8 +10,8 @@ html {
 }
 body {
 	height: 100%;
-	margin: 0px;
-	padding: 10px;
+	margin: 0em;
+	padding: 1em;
     box-sizing: border-box;
 }
 #div_content iframe {
@@ -24,8 +24,8 @@ body {
 	clear: both;
 }
 div {
-	margin: 0px;
-	padding: 0px;
+	margin: 0em;
+	padding: 0em;
 }
 #wrapper {
 	display: table;
@@ -41,11 +41,11 @@ div {
 }
 #wrapper #div_nav ul {
 	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
+	margin: 0em;
+	padding: 0em;
 }
 #wrapper #div_nav li {
-	width: 100px;
+	width: 8em;
 	float: left;
 	text-align: center;
 }
@@ -67,6 +67,8 @@ div {
     <a href="http://www.baidu.com" id="a_location">http://www.baidu.com</a>	</div>
   <div id="div_nav">
     <ul>
+	  <li><a href="javascript:set_dict(&quot;OALD&quot;);">OALD</a></li>
+	  <li><a href="javascript:set_dict(&quot;MW&quot;);">Merriam-Webster</a></li>
       <li><a href="javascript:set_dict(&quot;EO&quot;);">Etymonline</a></li>
       <li><a href="javascript:set_dict(&quot;MD&quot;);">MnemonicDict</a></li>
       <li><a href="javascript:set_dict(&quot;WK&quot;);">Wikipedia</a></li>
@@ -81,7 +83,7 @@ div {
   </div>
 </div>
 <script language="JavaScript" type="text/javascript">
-var selected_dict = "EO";
+var selected_dict = "OALD";
 function set_dict(dict) {
 	selected_dict = dict;
 	do_search();
@@ -89,7 +91,19 @@ function set_dict(dict) {
 function do_search() {
 	var searching_word = document.getElementById("input_searching").value;
 	var jump_location;
-	if(selected_dict == "EO") {
+	if(selected_dict == "OALD") {
+		jump_location =
+			"http://www.oxfordlearnersdictionaries.com/definition/english/" 
+				+ searching_word 
+				+ "?q="
+				+ searching_word;
+	}
+	else if(selected_dict == "MW") {
+		jump_location =
+			"http://www.merriam-webster.com/dictionary/" 
+				+ searching_word;
+	}
+	else if(selected_dict == "EO") {
 		jump_location =
 			"http://www.etymonline.com/index.php?allowed_in_frame=1&search=" 
 				+ searching_word 
