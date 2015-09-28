@@ -68,6 +68,7 @@ div {
     <a href="http://www.baidu.com" id="a_location">http://www.baidu.com</a>	</div>
   <div id="div_nav">
     <ul>
+      <li><a href="javascript:set_dict(&quot;NODE&quot;);">NODE</a></li>
 	  <li><a href="javascript:set_dict(&quot;OALD&quot;);">OALD</a></li>
 	  <li><a href="javascript:set_dict(&quot;MW&quot;);">Merriam-Webster</a></li>
       <li><a href="javascript:set_dict(&quot;EO&quot;);">Etymonline</a></li>
@@ -84,7 +85,7 @@ div {
   </div>
 </div>
 <script language="JavaScript" type="text/javascript">
-var selected_dict = "OALD";
+var selected_dict = "NODE";
 function set_dict(dict) {
 	selected_dict = dict;
 	do_search();
@@ -92,7 +93,12 @@ function set_dict(dict) {
 function do_search() {
 	var searching_word = document.getElementById("input_searching").value;
 	var jump_location;
-	if(selected_dict == "OALD") {
+    if(selected_dict == "NODE") {
+		jump_location =
+			"http://www.oxforddictionaries.com/definition/english/" 
+				+ searching_word;
+	}
+	else if(selected_dict == "OALD") {
 		jump_location =
 			"http://www.oxfordlearnersdictionaries.com/definition/english/" 
 				+ searching_word 
