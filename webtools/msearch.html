@@ -59,7 +59,7 @@ div {
 <div id="wrapper">
   <div id="div_search">
 	<label>
-	<input name="textfield" type="text" id="input_searching" />
+	<input name="textfield" type="text" id="input_searching" onkeydown="if (event.keyCode == 13) do_search()" />
 	</label>
 	<label>
 	<input name="Submit" type="submit" onclick="do_search();" value="Search" />
