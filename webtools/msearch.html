@@ -60,94 +60,104 @@ div {
 <div id="wrapper">
   <div id="div_search">
 	<label>
-	<input name="textfield" type="text" id="input_searching" onkeydown="if (event.keyCode == 13) do_search()" />
+	<input name="textfield" type="text" id="input_search" onkeydown="if (event.keyCode == 13) do_search()" />
 	</label>
 	<label>
 	<input name="Submit" type="submit" onclick="do_search();" value="Search" />
 	</label>
-    <a href="http://www.baidu.com" id="a_location">http://www.baidu.com</a>	</div>
+    <a href="" id="a_location"></a>	</div>
   <div id="div_nav">
     <ul>
+	  <li><a href="javascript:set_dict(&quot;BD&quot;);">BingDict</a></li>
+	  <li><a href="javascript:set_dict(&quot;AH&quot;);">AmericanHeritage</a></li>
+	  <li><a href="javascript:set_dict(&quot;EO&quot;);">Etymonline</a></li>
+	  <li><a href="javascript:set_dict(&quot;MW&quot;);">Merriam-Webster</a></li>
+	  <li><a href="javascript:set_dict(&quot;WIKI&quot;);">Wikipedia</a></li>
+      <li><a href="javascript:set_dict(&quot;WKT&quot;);">Wiktionary</a></li>
       <li><a href="javascript:set_dict(&quot;NODE&quot;);">NODE</a></li>
 	  <li><a href="javascript:set_dict(&quot;OALD&quot;);">OALD</a></li>
-	  <li><a href="javascript:set_dict(&quot;MW&quot;);">Merriam-Webster</a></li>
-      <li><a href="javascript:set_dict(&quot;EO&quot;);">Etymonline</a></li>
-      <li><a href="javascript:set_dict(&quot;MD&quot;);">MnemonicDict</a></li>
-      <li><a href="javascript:set_dict(&quot;WK&quot;);">Wikipedia</a></li>
-      <li><a href="javascript:set_dict(&quot;WKT&quot;);">Wiktionary</a></li>
-      <li><a href="javascript:set_dict(&quot;BD&quot;);">BingDict</a></li>
-      <li><a href="javascript:set_dict(&quot;RZ&quot;);">RhymeZone</a></li>
+	  <li><a href="javascript:set_dict(&quot;MD&quot;);">MnemonicDict</a></li>
+	  <li><a href="javascript:set_dict(&quot;RZ&quot;);">RhymeZone</a></li>
       <li><a href="javascript:set_dict(&quot;BAI&quot;);">BaiduDict</a></li>
     </ul>
   </div>
   <div id="div_content">
-    <iframe src="http://www.baidu.com" scrolling="auto" id="iframe_content"></iframe>
+    <iframe src="" scrolling="auto" id="iframe_content"></iframe>
   </div>
 </div>
 <script language="JavaScript" type="text/javascript">
-var selected_dict = "NODE";
+var dict_list = [
+	{name:"NODE", 
+		main:"http://www.oxforddictionaries.com/definition/english/", 
+		query:"http://www.oxforddictionaries.com/definition/english/{{QUERY_WORD}}"},
+	{name:"OALD", 
+		main:"http://www.oxfordlearnersdictionaries.com/definition/english/", 
+		query:"http://www.oxfordlearnersdictionaries.com/definition/english/{{QUERY_WORD}}?q={{QUERY_WORD}}"},
+	{name:"MW", 
+		main:"http://www.merriam-webster.com/dictionary/", 
+		query:"http://www.merriam-webster.com/dictionary/{{QUERY_WORD}}"},
+	{name:"EO", 
+		main:"http://www.etymonline.com/index.php?allowed_in_frame=1", 
+		query:"http://www.etymonline.com/index.php?allowed_in_frame=1&search={{QUERY_WORD}}&searchmode=none"},
+	{name:"AH", 
+		main:"https://ahdictionary.com/", 
+		query:"https://ahdictionary.com/word/search.html?q={{QUERY_WORD}}"},
+	{name:"MD", 
+		main:"http://mnemonicdictionary.com/", 
+		query:"http://mnemonicdictionary.com/?word={{QUERY_WORD}}"},
+	{name:"WIKI", 
+		main:"https://en.wikipedia.org/wiki/", 
+		query:"https://en.wikipedia.org/wiki/{{QUERY_WORD}}"},
+	{name:"WKT", 
+		main:"https://en.wiktionary.org/wiki/", 
+		query:"https://en.wiktionary.org/wiki/{{QUERY_WORD}}"},
+	{name:"BD", 
+		main:"http://cn.bing.com/dict/", 
+		query:"http://cn.bing.com/dict/search?q={{QUERY_WORD}}"},
+	{name:"RZ", 
+		main:"http://www.rhymezone.com/", 
+		query:"http://www.rhymezone.com/r/rhyme.cgi?Word={{QUERY_WORD}}"},	
+	{name:"BAI", 
+		main:"http://fanyi.baidu.com/?aldtype=85#en/zh/", 
+		query:"http://fanyi.baidu.com/?aldtype=85#en/zh/{{QUERY_WORD}}"}	
+];
+var selected_dict = "";
+
 function set_dict(dict) {
 	selected_dict = dict;
 	do_search();
 }
-function do_search() {
-	var searching_word = document.getElementById("input_searching").value;
-	var jump_location;
-    if(selected_dict == "NODE") {
-		jump_location =
-			"http://www.oxforddictionaries.com/definition/english/" 
-				+ searching_word;
+
+function get_url(dict, word) {
+	for(var i = 0; i < dict_list.length; i++){
+		if(dict_list[i].name == selected_dict) {
+			if(word == "") {
+				return dict_list[i].main;
+			}
+			else {
+				var query_url =  dict_list[i].query;
+				return  query_url.replace(/\{\{QUERY_WORD\}\}/g, word);
+			}
+		}
 	}
-	else if(selected_dict == "OALD") {
-		jump_location =
-			"http://www.oxfordlearnersdictionaries.com/definition/english/" 
-				+ searching_word 
-				+ "?q="
-				+ searching_word;
-	}
-	else if(selected_dict == "MW") {
-		jump_location =
-			"http://www.merriam-webster.com/dictionary/" 
-				+ searching_word;
-	}
-	else if(selected_dict == "EO") {
-		jump_location =
-			"http://www.etymonline.com/index.php?allowed_in_frame=1&search=" 
-				+ searching_word 
-				+ "&searchmode=none";
-	}
-	else if(selected_dict == "MD") {
-		jump_location =	
-			"http://mnemonicdictionary.com/?word=" + searching_word;		
-	}
-	else if(selected_dict == "WK") {
-		jump_location =	
-			"https://en.wikipedia.org/wiki/" + searching_word;		
-	}
-	else if(selected_dict == "WKT") {
-		jump_location =	
-			"https://en.wiktionary.org/wiki/" + searching_word;		
-	}
-	else if(selected_dict == "BD") {
-		jump_location =
-			"http://cn.bing.com/dict/search?q=" 
-			+ searching_word
-			+ "&go=Submit+Query&qs=bs&form=CM";	
-	}
-	else if(selected_dict == "RZ") {
-		jump_location =
-			"http://www.rhymezone.com/r/rhyme.cgi?Word="
-			+ searching_word
-			+ "&typeofrhyme=perfect&org1=syl&org2=l&org3=y";
-	}
-	else if(selected_dict == "BAI") {
-		jump_location =
-			"http://fanyi.baidu.com/?aldtype=85#en/zh/"
-			+ searching_word;
-	}
+	return "";
+}
+
+function query_word(dict, word) {
+	var jump_location = get_url(dict, word);
 	document.getElementById("a_location").href = jump_location;
 	document.getElementById("a_location").innerHTML = jump_location;
 	document.getElementById("iframe_content").src = jump_location;
+}
+
+function do_search() {
+	var word = document.getElementById("input_search").value;
+	query_word(selected_dict, word);
+}
+
+window.onload = function() {
+	selected_dict = "BD";
+	do_search();
 }
 </script>
 </body>
