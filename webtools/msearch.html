@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>MultiSearch</title>
 <style type="text/css">
 <!--
@@ -58,14 +59,6 @@ div {
 </head>
 <body>
 <div id="wrapper">
-  <div id="div_search">
-	<label>
-	<input name="textfield" type="text" id="input_search" onkeydown="if (event.keyCode == 13) do_search()" />
-	</label>
-	<label>
-	<input name="Submit" type="submit" onclick="do_search();" value="Search" />
-	</label>
-    <a href="" id="a_location"></a>	</div>
   <div id="div_nav">
     <ul>
 	  <li><a href="javascript:set_dict(&quot;BD&quot;);">BingDict</a></li>
@@ -80,6 +73,15 @@ div {
 	  <li><a href="javascript:set_dict(&quot;RZ&quot;);">RhymeZone</a></li>
       <li><a href="javascript:set_dict(&quot;BAI&quot;);">BaiduDict</a></li>
     </ul>
+  </div>
+  <div id="div_search">
+	<label>
+	<input name="textfield" type="text" id="input_search" onkeydown="if (event.keyCode == 13) do_search()" />
+	</label>
+	<label>
+	<input name="Submit" type="submit" onclick="do_search();" value="Search" />
+	</label>
+    <a href="" id="a_location"></a>	
   </div>
   <div id="div_content">
     <iframe src="" scrolling="auto" id="iframe_content"></iframe>
