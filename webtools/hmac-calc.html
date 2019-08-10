@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>HMAC Calculator</title>
+  </head>
+  <body>
+    <h1>HMAC Calculator</h1>
+    <form>
+      <div class="form-group">
+        <label for="inputText">Input: </label>
+        <textarea class="form-control" id="inputText" rows="3" placeholder="Input"></textarea>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="inputRadios" id="inputRadios1" value="1" checked>
+          <label class="form-check-label" for="inputRadios1">Raw</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="inputRadios" id="inputRadios2" value="2">
+          <label class="form-check-label" for="inputRadios2">Hex</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="inputRadios" id="inputRadios3" value="3">
+          <label class="form-check-label" for="inputRadios3">Base64</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="keyText">Key: </label>
+        <input class="form-control" id="keyText" type="text" placeholder="Key">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="keyRadios" id="keyRadios1" value="1" checked>
+          <label class="form-check-label" for="keyRadios1">Raw</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="keyRadios" id="keyRadios2" value="2">
+          <label class="form-check-label" for="keyRadios2">Hex</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="keyRadios" id="keyRadios3" value="3">
+          <label class="form-check-label" for="keyRadios3">Base64</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="outputText">Output: </label>
+        <input class="form-control" id="outputText" type="text" placeholder="Output">
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="outputRadios" id="outputRadios1" value="1">
+          <label class="form-check-label" for="outputRadios1">Raw</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="outputRadios" id="outputRadios2" value="2" checked>
+          <label class="form-check-label" for="outputRadios2">Hex</label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="outputRadios" id="outputRadios3" value="3">
+          <label class="form-check-label" for="outputRadios3">Base64</label>
+        </div>
+      </div>
+    </form>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="crypto-js.js"></script>
+    <script>
+      var input = "";
+      var key = "";
+      var output = "";
+      $('#inputText, input[type=radio][name=inputRadios]').change(function() {
+          updateOutput();
+      });
+      $('#keyText, input[type=radio][name=keyRadios]').change(function() {
+          updateOutput();
+      });
+      $('#outputText').change(function() {
+          setOutput();
+      });
+      $('input[type=radio][name=outputRadios]').change(function() {
+          encodeOutput();
+      });
+      function getRadioValue(radioName) {
+        var elements = document.getElementsByName(radioName);
+        for (var i = 0; i < elements.length; i++) {
+          if (elements[i].checked) {
+            return elements[i].value;
+          }
+        }
+      }
+      function getTextValue(textName, radioName) {
+        var text = document.getElementById(textName).value;
+        var opt = getRadioValue(radioName);
+        if(opt == 3) {
+          return CryptoJS.enc.Base64.parse(text);
+        }
+        else if(opt == 2) {
+          return CryptoJS.enc.Hex.parse(text);
+        }
+        else {
+          return CryptoJS.enc.Utf8.parse(text);
+        }
+      }
+      function setTextValue(textName, radioName, value) {
+        var opt = getRadioValue(radioName);
+        if(opt == 3) {
+          document.getElementById(textName).value = value.toString(CryptoJS.enc.Base64);
+        }
+        else if(opt == 2) {
+          document.getElementById(textName).value = value.toString(CryptoJS.enc.Hex);
+        }
+        else {
+          document.getElementById(textName).value = value.toString(CryptoJS.enc.Utf8);
+        }
+      }
+      function updateOutput() {
+        input = getTextValue("inputText", "inputRadios");
+        key = getTextValue("keyText", "keyRadios");
+        output = CryptoJS.HmacSHA1(input, key);
+        encodeOutput();
+      }
+      function setOutput() {
+        output = getTextValue("outputText", "outputRadios");
+        encodeOutput();
+      }
+      function encodeOutput() {
+        setTextValue("outputText", "outputRadios", output);
+      }
+    </script>
+  </body>
+</html>
