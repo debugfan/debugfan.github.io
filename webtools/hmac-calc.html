@@ -14,6 +14,21 @@
     <h1>HMAC Calculator</h1>
     <form>
       <div class="form-group">
+        <p>Algorithm: </p>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="algoRadios" id="algoRadios1" value="1">
+          <label class="form-check-label" for="algoRadios1">HMAC-MD5</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="algoRadios" id="algoRadios2" value="2" checked>
+          <label class="form-check-label" for="algoRadios2">HMAC-SHA1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="algoRadios" id="algoRadios3" value="3">
+          <label class="form-check-label" for="algoRadios3">HMAC-SHA256</label>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="inputText">Input: </label>
         <textarea class="form-control" id="inputText" rows="3" placeholder="Input"></textarea>
         <div class="form-check">
@@ -72,6 +87,10 @@
       var input = "";
       var key = "";
       var output = "";
+      var algo = 0;
+      $('input[type=radio][name=algoRadios]').change(function() {
+          updateOutput();
+      });
       $('#inputText, input[type=radio][name=inputRadios]').change(function() {
           updateOutput();
       });
@@ -120,7 +139,16 @@
       function updateOutput() {
         input = getTextValue("inputText", "inputRadios");
         key = getTextValue("keyText", "keyRadios");
-        output = CryptoJS.HmacSHA1(input, key);
+        algo = getRadioValue("algoRadios");
+        if(algo == 1) {
+          output = CryptoJS.HmacMD5(input, key);
+        }
+        else if(algo == 2) {
+          output = CryptoJS.HmacSHA1(input, key);
+        }
+        else {
+          output = CryptoJS.HmacSHA256(input, key);
+        }
         encodeOutput();
       }
       function setOutput() {
