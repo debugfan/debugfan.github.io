@@ -19,6 +19,6 @@
   "homepage": "https://github.com/debugfan/debugfan.github.io#readme",
   "dependencies": {
     "crypto-js": "^3.1.9-1",
-    "express": "^4.17.1"
+    "express": "^4.17.3"
   }
 }
